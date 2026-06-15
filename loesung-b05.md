@@ -75,3 +75,66 @@ Zur Prüfung habe ich folgende Befehle benutzt:
 ```
 
 
+---
+
+## Aufgabe 2.1: Analyse der Äquivalenzklassen & Grenzwerte
+
+In dieser Aufgabe habe ich die Methode `Shop#accept` untersucht.
+
+Die Methode prüft, ob ein neuer Auftrag angenommen werden kann. Dabei sind der Fahrradtyp, der Kunde und die Anzahl der offenen Aufträge wichtig.
+
+### Äquivalenzklassen
+
+Für den Fahrradtyp gibt es diese Fälle:
+
+| Fall                | Fahrradtyp                          | Erwartung                      |
+| ------------------- | ----------------------------------- | ------------------------------ |
+| gültiger Typ        | `RACE`, `SINGLE_SPEED` oder `FIXIE` | Auftrag kann angenommen werden |
+| nicht erlaubter Typ | `GRAVEL`                            | Auftrag wird abgelehnt         |
+| nicht erlaubter Typ | `EBIKE`                             | Auftrag wird abgelehnt         |
+
+Für den Kunden gibt es diese Fälle:
+
+| Fall                      | Situation                         | Erwartung                      |
+| ------------------------- | --------------------------------- | ------------------------------ |
+| kein offener Auftrag      | Der Kunde hat noch keinen Auftrag | Auftrag kann angenommen werden |
+| offener Auftrag vorhanden | Der Kunde hat schon einen Auftrag | Auftrag wird abgelehnt         |
+
+Für die Warteschlange gibt es diese Fälle:
+
+| Fall               | Anzahl der vorhandenen Aufträge | Erwartung                      |
+| ------------------ | ------------------------------: | ------------------------------ |
+| Platz vorhanden    |                         0 bis 4 | Auftrag kann angenommen werden |
+| Warteschlange voll |                     5 oder mehr | Auftrag wird abgelehnt         |
+
+Der Auftrag wird nur angenommen, wenn alle Bedingungen passen.
+
+### Grenzwertanalyse
+
+Der wichtige Grenzwert liegt zwischen vier und fünf vorhandenen Aufträgen.
+
+| Vorhandene Aufträge | Erwartung                    |
+| ------------------: | ---------------------------- |
+|                   0 | Auftrag wird angenommen      |
+|                   4 | Auftrag wird noch angenommen |
+|                   5 | Auftrag wird abgelehnt       |
+
+Bei vier vorhandenen Aufträgen gibt es noch einen freien Platz. Bei fünf vorhandenen Aufträgen ist die Warteschlange voll.
+
+### Testfälle
+
+| Nr. | Fahrradtyp     | Situation                              | Vorhandene Aufträge | Ergebnis |
+| --: | -------------- | -------------------------------------- | ------------------: | -------- |
+|   1 | `RACE`         | Kunde hat keinen Auftrag               |                   0 | `true`   |
+|   2 | `GRAVEL`       | Kunde hat keinen Auftrag               |                   0 | `false`  |
+|   3 | `EBIKE`        | Kunde hat keinen Auftrag               |                   0 | `false`  |
+|   4 | `FIXIE`        | Kunde hat schon einen Auftrag          |                   1 | `false`  |
+|   5 | `SINGLE_SPEED` | Auftrag gehört zu einem anderen Kunden |                   1 | `true`   |
+|   6 | `RACE`         | neuer Kunde                            |                   4 | `true`   |
+|   7 | `RACE`         | neuer Kunde                            |                   5 | `false`  |
+
+Bei den Testfällen versuche ich immer nur eine Bedingung zu verändern. Dadurch kann man einfacher erkennen, warum ein Auftrag angenommen oder abgelehnt wird.
+
+
+
+

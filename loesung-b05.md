@@ -138,3 +138,50 @@ Bei den Testfällen versuche ich immer nur eine Bedingung zu verändern. Dadurch
 
 
 
+---
+
+## Aufgabe 2.2: Mocking I
+
+In dieser Aufgabe habe ich die Testfälle aus Aufgabe 2.1 mit JUnit umgesetzt.
+
+Dafür habe ich Tests für die Methode `Shop#accept` geschrieben. Getestet wurden diese Fälle:
+
+* ein gültiges Race-Bike bei leerer Warteschlange
+* ein Gravel-Bike
+* ein E-Bike
+* ein zweiter Auftrag vom gleichen Kunden
+* ein Auftrag von einem anderen Kunden
+* vier vorhandene Aufträge
+* fünf vorhandene Aufträge
+
+Für die Tests habe ich Mockito benutzt. Der Grund dafür ist, dass die Klasse `Order` noch nicht vollständig implementiert ist. Einige Methoden können deshalb noch nicht normal verwendet werden.
+
+Mit Mockito konnte ich ein einfaches Testobjekt erzeugen:
+
+```java
+Order order = mock(Order.class);
+```
+
+Danach habe ich festgelegt, was die Methoden zurückgeben sollen:
+
+```java
+when(order.getBicycleType()).thenReturn(Type.RACE);
+when(order.getCustomer()).thenReturn("Anna");
+```
+
+Dadurch konnte ich verschiedene Fahrradtypen und Kunden testen, ohne die Klasse `Order` selbst zu verändern.
+
+Der `Shop` wurde nicht gemockt. Dadurch wurde die echte Methode `Shop#accept` getestet.
+
+Besonders wichtig waren die Grenzwerte bei vier und fünf vorhandenen Aufträgen. Bei vier Aufträgen wird ein weiterer Auftrag noch angenommen. Bei fünf Aufträgen wird ein neuer Auftrag abgelehnt.
+
+Zur Prüfung habe ich folgende Befehle benutzt:
+
+```bash
+.\gradlew spotlessApply
+.\gradlew spotlessCheck
+.\gradlew test
+.\gradlew build
+```
+
+Alle Tests waren erfolgreich.

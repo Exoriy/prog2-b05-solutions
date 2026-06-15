@@ -44,3 +44,34 @@ Ich habe die Implementierung mit verschiedenen Keywords, Kommentaren, Strings un
 
 
 
+---
+
+## Aufgabe 1.2: Visitoren mit ANTLR (Pretty Printing)
+
+In dieser Aufgabe habe ich mit dem `MiniJavaLexer` und dem `MiniJavaParser` einen Parse-Tree für MiniJava-Code erstellt. Danach habe ich den vorhandenen `PrettyPrinterVisitor` ergänzt.
+
+Ich habe die vier TODO-Methoden implementiert:
+
+* `visitCompilationUnit`
+* `visitClassBody`
+* `visitBlock`
+* `visitStatement`
+
+Der Visitor geht durch den Parse-Tree und erzeugt den Quellcode neu. Klassenkörper und andere Blöcke werden nach einer öffnenden Klammer in einer neuen Zeile ausgegeben. Der Inhalt wird um eine Stufe eingerückt. Statements und Deklarationen mit einem Semikolon stehen jeweils in einer eigenen Zeile.
+
+Beim Start des Programms wird in der Konsole gefragt, wie viele Leerzeichen für eine Einrückungsstufe benutzt werden sollen. Ich habe den Pretty Printer mit mehreren Beispielen getestet: einer einfachen Klasse, einer Klasse mit `if`, `else` und `while` sowie mit verschachtelten Blöcken.
+
+Bei der Ausgabe fehlen die ursprünglichen Leerzeichen, Zeilenumbrüche und Kommentare. Die Whitespaces werden vom Lexer übersprungen. Kommentare liegen in einem versteckten Token-Kanal und gehören deshalb nicht zum normalen Parse-Tree, den der Visitor durchläuft. Der Visitor erzeugt stattdessen eigene Zeilenumbrüche und Einrückungen.
+
+Die Formatierung innerhalb von Ausdrücken ist teilweise noch einfach. Das war für den Pflichtteil ausreichend, weil hauptsächlich die Struktur, die Blöcke und die Einrückung richtig dargestellt werden sollten.
+
+Zur Prüfung habe ich folgende Befehle benutzt:
+
+```bash
+.\gradlew spotlessCheck
+.\gradlew test
+.\gradlew build
+.\gradlew run
+```
+
+
